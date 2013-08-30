@@ -46,11 +46,53 @@ void invocation(const ComType com, const uint8_t *data) {
 			return;
 		}
 
+		case FID_START_COUNTER: {
+			start_counter(com, (StartCounter*)data);
+			return;
+		}
+
+		case FID_GET_COUNTER_VALUE: {
+			get_counter_value(com, (GetCounterValue*)data);
+			return;
+		}
+
 		default: {
 			BA->com_return_error(data, sizeof(MessageHeader), MESSAGE_ERROR_CODE_NOT_SUPPORTED, com);
 			return;
 		}
 	}
+}
+
+void start_counter(const ComType com, const StartCounter *data) {
+	BC->counter_from            = BETWEEN(-999, data->from, 9999);
+	BC->counter_to              = BETWEEN(-999, data->to, 9999);
+	BC->counter_increment       = BETWEEN(-999, data->increment, 9999);
+	BC->counter_length          = data->length;
+
+	if((BC->counter_length == 0) ||
+	   (BC->counter_increment == 0) ||
+	   (BC->counter_increment > 0 &&  BC->counter_from > BC->counter_to) ||
+	   (BC->counter_increment < 0 &&  BC->counter_from < BC->counter_to)) {
+		BC->counter_length_current = 0;
+		BA->com_return_error(data, sizeof(MessageHeader), MESSAGE_ERROR_CODE_INVALID_PARAMETER, com);
+		return;
+	}
+
+	BC->counter_current         = BC->counter_from;
+	BC->counter_length_current  = BC->counter_length;
+
+	BA->com_return_setter(com, data);
+}
+
+void get_counter_value(const ComType com, const GetCounterValue *data) {
+	GetCounterValueReturn gcvr;
+	gcvr.header        = data->header;
+	gcvr.header.length = sizeof(GetCounterValueReturn);
+	gcvr.value         = BC->counter_current;
+
+	BA->send_blocking_with_timeout(&gcvr,
+	                               sizeof(GetCounterValueReturn),
+	                               com);
 }
 
 void set_segments(const ComType com, const SetSegments *data) {
@@ -59,9 +101,11 @@ void set_segments(const ComType com, const SetSegments *data) {
 	BC->segments[2]  = data->segments[2] & 0x7F;
 	BC->segments[3]  = data->segments[3] & 0x7F;
 	BC->brightness   = MIN(data->brightness, 7);
-	BC->clock_points = data->clock_points;
+	BC->colon = data->colon;
 
 	update_digits();
+
+	BC->counter_length_current = 0;
 
 	BA->com_return_setter(com, data);
 }
@@ -76,7 +120,7 @@ void get_segments(const ComType com, const GetSegments *data) {
 	gsr.segments[2]   = BC->segments[2];
 	gsr.segments[3]   = BC->segments[3];
 	gsr.brightness    = BC->brightness;
-	gsr.clock_points  = BC->clock_points;
+	gsr.colon  = BC->colon;
 
 	BA->send_blocking_with_timeout(&gsr,
 	                               sizeof(GetSegmentsReturn),
@@ -99,7 +143,7 @@ void constructor(void) {
 	BC->segments[2] = 0;
 	BC->segments[3] = 0;
 	BC->brightness = 0;
-	BC->clock_points = false;
+	BC->colon = false;
 
     BC->tick = 0;
 }
@@ -221,10 +265,10 @@ void update_digits(void) {
 
 	i2c_start();
 	i2c_send_byte(TM1637_ADDERSS_DIGITS);
-	i2c_send_byte(BC->segments[3] | (BC->clock_points ? TM1637_CLOCK_POINT_ON : TM1637_CLOCK_POINT_OFF));
-	i2c_send_byte(BC->segments[2] | (BC->clock_points ? TM1637_CLOCK_POINT_ON : TM1637_CLOCK_POINT_OFF));
-	i2c_send_byte(BC->segments[1] | (BC->clock_points ? TM1637_CLOCK_POINT_ON : TM1637_CLOCK_POINT_OFF));
-	i2c_send_byte(BC->segments[0] | (BC->clock_points ? TM1637_CLOCK_POINT_ON : TM1637_CLOCK_POINT_OFF));
+	i2c_send_byte(BC->segments[3] | (BC->colon ? TM1637_COLON_ON : TM1637_COLON_OFF));
+	i2c_send_byte(BC->segments[2] | (BC->colon ? TM1637_COLON_ON : TM1637_COLON_OFF));
+	i2c_send_byte(BC->segments[1] | (BC->colon ? TM1637_COLON_ON : TM1637_COLON_OFF));
+	i2c_send_byte(BC->segments[0] | (BC->colon ? TM1637_COLON_ON : TM1637_COLON_OFF));
 	i2c_stop();
 
 	i2c_sleep_halfclock();
@@ -235,5 +279,67 @@ void update_digits(void) {
 	i2c_stop();
 }
 
+void set_counter(int16_t value) {
+	value = BETWEEN(-999, value, 9999);
+	BC->segments[0] = digits[ABS(value) % 10];
+	BC->segments[1] = digits[(ABS(value)/10) % 10];
+	BC->segments[2] = digits[(ABS(value)/100) % 10];
+	if(value < 0) {
+		BC->segments[3] = 1 << 6;
+	} else {
+		BC->segments[3] = digits[(ABS(value)/1000) % 10];
+	}
+
+	for(int8_t i = 3; i > 0; i--) {
+		if(BC->segments[i] == digits[0] || BC->segments[i] == 0) {
+			BC->segments[i] = 0;
+		} else {
+			if(!(i == 3 && BC->segments[3] == 1 << 6)) {
+				break;
+			}
+		}
+	}
+
+	BC->colon = false;
+
+	update_digits();
+}
+
 void tick(const uint8_t tick_type) {
+	if(tick_type & TICK_TASK_TYPE_CALCULATION) {
+		if(BC->counter_length_current > 0) {
+			BC->counter_length_current--;
+			if(BC->counter_length_current == 0) {
+				BC->counter_current += BC->counter_increment;
+				set_counter(BC->counter_current);
+				if(BC->counter_increment > 0) {
+					if(BC->counter_current + BC->counter_increment > BC->counter_to) {
+						BC->counter_finished = true;
+						BC->counter_length_current = 0;
+					} else {
+						BC->counter_length_current = BC->counter_length;
+					}
+				} else if(BC->counter_increment < 0) {
+					if(BC->counter_current + BC->counter_increment < BC->counter_to) {
+						BC->counter_finished = true;
+						BC->counter_length_current = 0;
+					} else {
+						BC->counter_length_current = BC->counter_length;
+					}
+				}
+			}
+		}
+	}
+
+	if(tick_type & TICK_TASK_TYPE_MESSAGE) {
+		if(BC->counter_finished) {
+			BC->counter_finished = false;
+			CounterFinished cf;
+			BA->com_make_default_header(&cf, BS->uid, sizeof(CounterFinished), FID_COUNTER_FINISHED);
+
+			BA->send_blocking_with_timeout(&cf,
+										   sizeof(CounterFinished),
+										   *BA->com_current);
+		}
+	}
 }

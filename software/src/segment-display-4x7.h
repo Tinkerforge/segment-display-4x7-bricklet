@@ -32,11 +32,14 @@
 #define TM1637_ADDERSS_DIGITS  0xC0
 #define TM1637_ADDRESS_SHOW    0x88
 
-#define TM1637_CLOCK_POINT_ON  0x80
-#define TM1637_CLOCK_POINT_OFF 0
+#define TM1637_COLON_ON  0x80
+#define TM1637_COLON_OFF 0
 
 #define FID_SET_SEGMENTS 1
 #define FID_GET_SEGMENTS 2
+#define FID_START_COUNTER 3
+#define FID_GET_COUNTER_VALUE 4
+#define FID_COUNTER_FINISHED 5
 
 typedef struct {
 	MessageHeader header;
@@ -46,7 +49,7 @@ typedef struct {
 	MessageHeader header;
 	uint8_t segments[4];
 	uint8_t brightness;
-	bool clock_points;
+	bool colon;
 } __attribute__((__packed__)) SetSegments;
 
 typedef struct {
@@ -57,11 +60,34 @@ typedef struct {
 	MessageHeader header;
 	uint8_t segments[4];
 	uint8_t brightness;
-	bool clock_points;
+	bool colon;
 } __attribute__((__packed__)) GetSegmentsReturn;
+
+typedef struct {
+	MessageHeader header;
+	int16_t from;
+	int16_t to;
+	int16_t increment;
+	uint32_t length;
+} __attribute__((__packed__)) StartCounter;
+
+typedef struct {
+	MessageHeader header;
+} __attribute__((__packed__)) GetCounterValue;
+
+typedef struct {
+	MessageHeader header;
+	uint16_t value;
+} __attribute__((__packed__)) GetCounterValueReturn;
+
+typedef struct {
+	MessageHeader header;
+} __attribute__((__packed__)) CounterFinished;
 
 void set_segments(const ComType com, const SetSegments *data);
 void get_segments(const ComType com, const GetSegments *data);
+void start_counter(const ComType com, const StartCounter *data);
+void get_counter_value(const ComType com, const GetCounterValue *data);
 
 void invocation(const ComType com, const uint8_t *data);
 void constructor(void);

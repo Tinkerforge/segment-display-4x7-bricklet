@@ -52,7 +52,16 @@
 typedef struct {
 	uint8_t segments[4];
 	uint8_t brightness;
-	bool clock_points;
+	bool colon;
+
+	int16_t counter_from;
+	int16_t counter_to;
+	int16_t counter_current;
+	int16_t counter_increment;
+	int16_t counter_length_current;
+	uint32_t counter_length;
+
+	bool counter_finished;
 
 	uint32_t tick;
 } BrickContext;
