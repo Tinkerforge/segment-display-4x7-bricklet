@@ -146,6 +146,8 @@ void constructor(void) {
 	BC->colon = false;
 
     BC->tick = 0;
+
+    // TODO: Clear I2C bus, see bricklib/com/i2c/i2c_clear_bus.c
 }
 
 void destructor(void) {
@@ -265,10 +267,10 @@ void update_digits(void) {
 
 	i2c_start();
 	i2c_send_byte(TM1637_ADDERSS_DIGITS);
-	i2c_send_byte(BC->segments[3] | (BC->colon ? TM1637_COLON_ON : TM1637_COLON_OFF));
-	i2c_send_byte(BC->segments[2] | (BC->colon ? TM1637_COLON_ON : TM1637_COLON_OFF));
-	i2c_send_byte(BC->segments[1] | (BC->colon ? TM1637_COLON_ON : TM1637_COLON_OFF));
 	i2c_send_byte(BC->segments[0] | (BC->colon ? TM1637_COLON_ON : TM1637_COLON_OFF));
+	i2c_send_byte(BC->segments[1] | (BC->colon ? TM1637_COLON_ON : TM1637_COLON_OFF));
+	i2c_send_byte(BC->segments[2] | (BC->colon ? TM1637_COLON_ON : TM1637_COLON_OFF));
+	i2c_send_byte(BC->segments[3] | (BC->colon ? TM1637_COLON_ON : TM1637_COLON_OFF));
 	i2c_stop();
 
 	i2c_sleep_halfclock();
@@ -281,20 +283,20 @@ void update_digits(void) {
 
 void set_counter(int16_t value) {
 	value = BETWEEN(-999, value, 9999);
-	BC->segments[0] = digits[ABS(value) % 10];
-	BC->segments[1] = digits[(ABS(value)/10) % 10];
-	BC->segments[2] = digits[(ABS(value)/100) % 10];
+	BC->segments[3] = digits[ABS(value) % 10];
+	BC->segments[2] = digits[(ABS(value)/10) % 10];
+	BC->segments[1] = digits[(ABS(value)/100) % 10];
 	if(value < 0) {
-		BC->segments[3] = 1 << 6;
+		BC->segments[0] = 1 << 6;
 	} else {
-		BC->segments[3] = digits[(ABS(value)/1000) % 10];
+		BC->segments[0] = digits[(ABS(value)/1000) % 10];
 	}
 
-	for(int8_t i = 3; i > 0; i--) {
+	for(int8_t i = 0; i < 4; i++) {
 		if(BC->segments[i] == digits[0] || BC->segments[i] == 0) {
 			BC->segments[i] = 0;
 		} else {
-			if(!(i == 3 && BC->segments[3] == 1 << 6)) {
+			if(!(i == 0 && BC->segments[0] == 1 << 6)) {
 				break;
 			}
 		}
