@@ -39,8 +39,8 @@
 
 #define BRICKLET_DEVICE_IDENTIFIER 237
 
-#define PIN_DIO (BS->pin1_ad)
-#define PIN_CLK (BS->pin2_da)
+#define PIN_CLK (BS->pin1_ad)
+#define PIN_DIO (BS->pin2_da)
 
 #define BOARD_MCK 64000000
 #define LOGGING_LEVEL LOGGING_DEBUG
