@@ -128,6 +128,8 @@ void get_segments(const ComType com, const GetSegments *data) {
 }
 
 void constructor(void) {
+	_Static_assert(sizeof(BrickContext) <= BRICKLET_CONTEXT_MAX_SIZE, "BrickContext too big");
+
     PIN_DIO.type = PIO_INPUT;
     PIN_DIO.attribute = PIO_DEFAULT;
     BA->PIO_Configure(&PIN_DIO, 1);
