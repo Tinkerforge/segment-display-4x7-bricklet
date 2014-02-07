@@ -1,0 +1,22 @@
+Needs["NETLink`"]
+LoadNETAssembly["Tinkerforge",NotebookDirectory[]<>"../../.."]
+
+host="localhost"
+port=4223
+uid="ioiu"(* Change to your UID *)
+
+(* 0~9,A,b,C,d,E,F *)
+digits={63,6,91,79,102,109,125,7,127,111,119,124,57,94,121,113}
+
+(* Create IPConnection and device object *)
+ipcon=NETNew["Tinkerforge.IPConnection"]
+sd=NETNew["Tinkerforge.BrickletSegmentDisplay4x7",uid,ipcon]
+ipcon@Connect[host,port]
+
+(* GWrite "4223" to the display with full brightness without colon *)
+sd@SetSegments[{digits[[4+1]],digits[[2+1]],digits[[2+1]],digits[[3+1]]},7,False]
+
+(* Clean up *)
+ipcon@Disconnect[]
+ReleaseNETObject[sd]
+ReleaseNETObject[ipcon]
