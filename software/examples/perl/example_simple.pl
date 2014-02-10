@@ -12,8 +12,8 @@ my @digits = (0x3f,0x06,0x5b,0x4f,
 	          0x7f,0x6f,0x77,0x7c,
 	          0x39,0x5e,0x79,0x71); # // 0~9,A,b,C,d,E,F
 
-my $ipcon = IPConnection->new(); # Create IP connection
-my $sd4x7 = BrickletSegmentDisplay4x7->new(&UID, $ipcon); # Create device object
+my $ipcon = Tinkerforge::IPConnection->new(); # Create IP connection
+my $sd4x7 = Tinkerforge::BrickletSegmentDisplay4x7->new(&UID, $ipcon); # Create device object
 
 $ipcon->connect(&HOST, &PORT); # Connect to brickd
 # Don't use device before ipcon is connected
