@@ -1,5 +1,4 @@
-var IPConnection = require('Tinkerforge/IPConnection');
-var BrickletSegmentDisplay4x7 = require('Tinkerforge/BrickletSegmentDisplay4x7');
+var Tinkerforge = require('tinkerforge');
 
 var HOST = 'localhost';
 var PORT = 4223;
@@ -19,7 +18,7 @@ ipcon.connect(HOST, PORT,
 );// Connect to brickd
 
 // Don't use device before ipcon is connected
-ipcon.on(IPConnection.CALLBACK_CONNECTED,
+ipcon.on(Tinkerforge.IPConnection.CALLBACK_CONNECTED,
     function(connectReason) {
         // Write "4223" to the display with full brightness without colon
         var segments = [DIGITS[4], DIGITS[2], DIGITS[2], DIGITS[3]];
