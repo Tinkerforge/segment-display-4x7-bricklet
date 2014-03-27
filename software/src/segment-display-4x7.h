@@ -23,6 +23,7 @@
 #define SEGMENT_DISPLAY_4X7_H
 
 #include <stdint.h>
+#include "bricklib/drivers/pio/pio.h"
 #include "bricklib/com/com_common.h"
 
 #define I2C_HALF_CLOCK_400KHZ  1250  // 2500ns per clock
@@ -95,6 +96,12 @@ void destructor(void);
 void tick(const uint8_t tick_type);
 
 void update_digits(void);
+
+void i2c_clear_bus_delay(void);
+void i2c_clear_bus_9clock(Pin *sda, Pin *scl);
+void i2c_clear_bus_stop(Pin *sda, Pin *scl);
+void i2c_clear_bus_start(Pin *sda, Pin *scl);
+void i2c_clear_bus(Pin *sda, Pin *scl);
 
 void i2c_clk_high(void);
 void i2c_clk_low(void);

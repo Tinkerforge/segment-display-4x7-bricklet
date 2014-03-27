@@ -149,7 +149,7 @@ void constructor(void) {
 
     BC->tick = 0;
 
-    // TODO: Clear I2C bus, see bricklib/com/i2c/i2c_clear_bus.c
+    i2c_clear_bus(&PIN_DIO, &PIN_CLK);
 }
 
 void destructor(void) {
@@ -161,6 +161,86 @@ void destructor(void) {
     PIN_CLK.attribute = PIO_PULLUP;
     BA->PIO_Configure(&PIN_CLK, 1);
 }
+
+void i2c_clear_bus_delay(void) {
+	SLEEP_US(10);
+}
+
+void i2c_clear_bus_9clock(Pin *sda, Pin *scl) {
+	scl->type = PIO_OUTPUT_0;
+	scl->attribute = PIO_DEFAULT;
+	BA->PIO_Configure(scl, 1);
+	i2c_clear_bus_delay();
+
+	sda->type = PIO_INPUT;
+	sda->attribute = PIO_PULLUP;
+	BA->PIO_Configure(sda, 1);
+	i2c_clear_bus_delay();
+
+	for(uint8_t i = 0; i < 9; i++) {
+		scl->type = PIO_INPUT;
+		scl->attribute = PIO_PULLUP;
+		BA->PIO_Configure(scl, 1);
+		i2c_clear_bus_delay();
+
+		scl->type = PIO_OUTPUT_0;
+		scl->attribute = PIO_DEFAULT;
+		BA->PIO_Configure(scl, 1);
+		i2c_clear_bus_delay();
+	}
+}
+
+void i2c_clear_bus_stop(Pin *sda, Pin *scl) {
+	scl->type = PIO_OUTPUT_0;
+	scl->attribute = PIO_DEFAULT;
+	BA->PIO_Configure(scl, 1);
+	i2c_clear_bus_delay();
+
+	sda->type = PIO_OUTPUT_0;
+	sda->attribute = PIO_DEFAULT;
+	BA->PIO_Configure(sda, 1);
+	i2c_clear_bus_delay();
+
+	scl->type = PIO_INPUT;
+	scl->attribute = PIO_PULLUP;
+	BA->PIO_Configure(scl, 1);
+	i2c_clear_bus_delay();
+
+	sda->type = PIO_INPUT;
+	sda->attribute = PIO_DEFAULT;
+	BA->PIO_Configure(sda, 1);
+	i2c_clear_bus_delay();
+}
+
+void i2c_clear_bus_start(Pin *sda, Pin *scl) {
+	sda->type = PIO_INPUT;
+	sda->attribute = PIO_DEFAULT;
+	BA->PIO_Configure(sda, 1);
+	i2c_clear_bus_delay();
+
+	scl->type = PIO_INPUT;
+	scl->attribute = PIO_PULLUP;
+	BA->PIO_Configure(scl, 1);
+	i2c_clear_bus_delay();
+
+	sda->type = PIO_OUTPUT_0;
+	sda->attribute = PIO_DEFAULT;
+	BA->PIO_Configure(sda, 1);
+	i2c_clear_bus_delay();
+
+	scl->type = PIO_OUTPUT_0;
+	scl->attribute = PIO_DEFAULT;
+	BA->PIO_Configure(scl, 1);
+	i2c_clear_bus_delay();
+}
+
+void i2c_clear_bus(Pin *sda, Pin *scl) {
+	i2c_clear_bus_start(sda, scl);
+	i2c_clear_bus_9clock(sda, scl);
+	i2c_clear_bus_start(sda, scl);
+	i2c_clear_bus_stop(sda, scl);
+}
+
 
 bool i2c_clk_value(void) {
 	return PIN_CLK.pio->PIO_PDSR & PIN_CLK.mask;
