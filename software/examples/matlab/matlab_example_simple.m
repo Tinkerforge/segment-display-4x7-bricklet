@@ -24,6 +24,6 @@ function matlab_example_simple
     segments = [DIGITS(4+1) DIGITS(2+1) DIGITS(2+1) DIGITS(3+1)];
     sd4x7.setSegments(segments, 7, false);
 
-    input('\nPress any key to exit...\n', 's');
+    input('Press any key to exit...\n', 's');
     ipcon.disconnect();
 end

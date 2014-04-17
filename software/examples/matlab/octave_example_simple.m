@@ -4,7 +4,6 @@ function octave_example_simple
     HOST = "localhost";
     PORT = 4223;
     UID = "kTf"; % Change to your UID
-
     DIGITS = [hex2dec("3f") hex2dec("06") hex2dec("5b") ...
               hex2dec("4f") hex2dec("66") hex2dec("6d") ...
               hex2dec("7d") hex2dec("07") hex2dec("7f") ...
@@ -24,6 +23,6 @@ function octave_example_simple
     segments = [DIGITS(4+1) DIGITS(2+1) DIGITS(2+1) DIGITS(3+1)];
     sd4x7.setSegments(segments, 7, false);
 
-    input("\nPress any key to exit...\n", "s");
+    input("Press any key to exit...\n", "s");
     ipcon.disconnect();
 end
