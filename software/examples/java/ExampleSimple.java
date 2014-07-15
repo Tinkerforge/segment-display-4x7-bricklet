@@ -23,7 +23,7 @@ public class ExampleSimple {
 		short[] segments = {DIGITS[4], DIGITS[2], DIGITS[2], DIGITS[3]};
 		sd4x7.setSegments(segments, (short)7, false);
 
-		System.console().readLine("Press key to exit\n");
+		System.out.println("Press key to exit"); System.in.read();
 		ipcon.disconnect();
 	}
 }
