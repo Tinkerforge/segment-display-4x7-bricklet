@@ -23,8 +23,8 @@ class Example
 		byte[] segments = {digits[4], digits[2], digits[2], digits[3]};
 		sd4x7.SetSegments(segments, 7, false);
 
-		System.Console.WriteLine("Press key to exit");
-		System.Console.ReadKey();
+		System.Console.WriteLine("Press enter to exit");
+		System.Console.ReadLine();
 		ipcon.Disconnect();
 	}
 }
