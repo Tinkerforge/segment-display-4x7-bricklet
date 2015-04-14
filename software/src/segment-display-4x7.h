@@ -96,6 +96,7 @@ void destructor(void);
 void tick(const uint8_t tick_type);
 
 void update_digits(void);
+void set_counter(int16_t value);
 
 void i2c_clear_bus_delay(void);
 void i2c_clear_bus_9clock(Pin *sda, Pin *scl);

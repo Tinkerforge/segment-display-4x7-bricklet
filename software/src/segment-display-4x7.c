@@ -1,5 +1,6 @@
 /* segment-display-4x7-bricklet
  * Copyright (C) 2013 Olaf Lüke <olaf@tinkerforge.com>
+ * Copyright (C) 2015 Matthias Bolte <matthias@tinkerforge.com>
  *
  * segment-display-4x7.c: Implementation of Segment Display 4x7 Bricklet messages
  *
@@ -80,6 +81,8 @@ void start_counter(const ComType com, const StartCounter *data) {
 
 	BC->counter_current         = BC->counter_from;
 	BC->counter_length_current  = BC->counter_length;
+
+	set_counter(BC->counter_current);
 
 	BA->com_return_setter(com, data);
 }
