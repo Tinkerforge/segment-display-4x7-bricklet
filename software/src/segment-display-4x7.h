@@ -1,5 +1,6 @@
 /* segment-display-4x7-bricklet
  * Copyright (C) 2013 Olaf Lüke <olaf@tinkerforge.com>
+ * Copyright (C) 2015 Matthias Bolte <matthias@tinkerforge.com>
  *
  * segment-display-4x7.h: Implementation of Segment Display 4x7 Bricklet messages
  *

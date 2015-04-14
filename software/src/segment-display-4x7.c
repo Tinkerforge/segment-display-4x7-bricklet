@@ -153,6 +153,8 @@ void constructor(void) {
     BC->tick = 0;
 
     i2c_clear_bus(&PIN_DIO, &PIN_CLK);
+
+	update_digits();
 }
 
 void destructor(void) {
@@ -243,7 +245,6 @@ void i2c_clear_bus(Pin *sda, Pin *scl) {
 	i2c_clear_bus_start(sda, scl);
 	i2c_clear_bus_stop(sda, scl);
 }
-
 
 bool i2c_clk_value(void) {
 	return PIN_CLK.pio->PIO_PDSR & PIN_CLK.mask;
