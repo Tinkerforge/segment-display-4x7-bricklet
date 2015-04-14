@@ -377,7 +377,7 @@ void set_counter(int16_t value) {
 		BC->segments[0] = digits[(ABS(value)/1000) % 10];
 	}
 
-	for(int8_t i = 0; i < 4; i++) {
+	for(int8_t i = 0; i < 3; i++) {
 		if(BC->segments[i] == digits[0] || BC->segments[i] == 0) {
 			BC->segments[i] = 0;
 		} else {
