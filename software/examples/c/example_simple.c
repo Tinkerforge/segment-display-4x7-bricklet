@@ -18,8 +18,8 @@ int main() {
 	ipcon_create(&ipcon);
 
 	// Create device object
-	SegmentDisplay4x7 sd4x7;
-	segment_display_4x7_create(&sd4x7, UID, &ipcon); 
+	SegmentDisplay4x7 sd;
+	segment_display_4x7_create(&sd, UID, &ipcon);
 
 	// Connect to brickd
 	if(ipcon_connect(&ipcon, HOST, PORT) < 0) {
@@ -30,7 +30,7 @@ int main() {
 
 	// Write "4223" to the display with full brightness without colon
 	uint8_t segments[4] = {digits[4], digits[2], digits[2], digits[3]};
-	segment_display_4x7_set_segments(&sd4x7, segments, 7, false);
+	segment_display_4x7_set_segments(&sd, segments, 7, false);
 
 	printf("Press key to exit\n");
 	getchar();

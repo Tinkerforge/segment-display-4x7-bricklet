@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-  
+# -*- coding: utf-8 -*-
 
 HOST = "localhost"
 PORT = 4223
@@ -14,14 +14,14 @@ from tinkerforge.bricklet_segment_display_4x7 import SegmentDisplay4x7
 
 if __name__ == "__main__":
     ipcon = IPConnection() # Create IP connection
-    sd4x7 = SegmentDisplay4x7(UID, ipcon) # Create device object
+    sd = SegmentDisplay4x7(UID, ipcon) # Create device object
 
     ipcon.connect(HOST, PORT) # Connect to brickd
     # Don't use device before ipcon is connected
 
     # Write "4223" to the display with full brightness without colon
     segments = (DIGITS[4], DIGITS[2], DIGITS[2], DIGITS[3])
-    sd4x7.set_segments(segments, 7, False)
+    sd.set_segments(segments, 7, False)
 
     raw_input('Press key to exit\n') # Use input() in Python 3
     ipcon.disconnect()
