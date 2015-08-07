@@ -10,11 +10,11 @@ DIGITS = [0x3f,0x06,0x5b,0x4f,
           0x39,0x5e,0x79,0x71] # // 0~9,A,b,C,d,E,F
 
 from tinkerforge.ip_connection import IPConnection
-from tinkerforge.bricklet_segment_display_4x7 import SegmentDisplay4x7
+from tinkerforge.bricklet_segment_display_4x7 import BrickletSegmentDisplay4x7
 
 if __name__ == "__main__":
     ipcon = IPConnection() # Create IP connection
-    sd = SegmentDisplay4x7(UID, ipcon) # Create device object
+    sd = BrickletSegmentDisplay4x7(UID, ipcon) # Create device object
 
     ipcon.connect(HOST, PORT) # Connect to brickd
     # Don't use device before ipcon is connected
