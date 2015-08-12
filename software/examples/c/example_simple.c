@@ -12,7 +12,7 @@ const uint8_t digits[] = {0x3f,0x06,0x5b,0x4f,
                           0x7f,0x6f,0x77,0x7c,
                           0x39,0x5e,0x79,0x71}; // 0~9,A,b,C,d,E,F
 
-int main() {
+int main(void) {
 	// Create IP connection
 	IPConnection ipcon;
 	ipcon_create(&ipcon);
@@ -24,7 +24,7 @@ int main() {
 	// Connect to brickd
 	if(ipcon_connect(&ipcon, HOST, PORT) < 0) {
 		fprintf(stderr, "Could not connect\n");
-		exit(1);
+		return 1;
 	}
 	// Don't use device before ipcon is connected
 
@@ -35,4 +35,5 @@ int main() {
 	printf("Press key to exit\n");
 	getchar();
 	ipcon_destroy(&ipcon); // Calls ipcon_disconnect internally
+	return 0;
 }
