@@ -10,8 +10,7 @@ type
   TExample = class
   private
     ipcon: TIPConnection;
-    sd4x7: TBrickletSegmentDisplay4x7;
-    segments: array[0..3] of byte;
+    sd: TBrickletSegmentDisplay4x7;
   public
     procedure Execute;
   end;
@@ -21,19 +20,20 @@ const
   PORT = 4223;
   UID = 'XYZ'; { Change to your UID }
   DIGITS : array[0..15] of byte = ($3f,$06,$5b,$4f,
-	                               $66,$6d,$7d,$07,
-	                               $7f,$6f,$77,$7c,
-	                               $39,$5e,$79,$71);
+                                   $66,$6d,$7d,$07,
+                                   $7f,$6f,$77,$7c,
+                                   $39,$5e,$79,$71);
 var
   e: TExample;
 
 procedure TExample.Execute;
+var segments: array[0..3] of byte;
 begin
   { Create IP connection }
   ipcon := TIPConnection.Create;
 
   { Create device object }
-  sd4x7 := TBrickletSegmentDisplay4x7.Create(UID, ipcon);
+  sd := TBrickletSegmentDisplay4x7.Create(UID, ipcon);
 
   { Connect to brickd }
   ipcon.Connect(HOST, PORT);
@@ -44,7 +44,7 @@ begin
   segments[1] := DIGITS[2];
   segments[2] := DIGITS[2];
   segments[3] := DIGITS[3];
-  sd4x7.SetSegments(segments, 7, false);
+  sd.SetSegments(segments, 7, false);
 
   WriteLn('Press key to exit');
   ReadLn;
