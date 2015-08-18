@@ -11,14 +11,14 @@ Module ExampleSimple
 
     Sub Main()
         Dim ipcon As New IPConnection() ' Create IP connection
-        Dim sd4x7 As New BrickletSegmentDisplay4x7(UID, ipcon) ' Create device object
+        Dim sd As New BrickletSegmentDisplay4x7(UID, ipcon) ' Create device object
 
         ipcon.Connect(HOST, PORT) ' Connect to brickd
         ' Don't use device before ipcon is connected
 
         ' Write "4223" to the display with full brightness without colon
         Dim segments() As Byte = {DIGITS(4), DIGITS(2), DIGITS(2), DIGITS(3)}
-        sd4x7.SetSegments(segments, 7, false)
+        sd.SetSegments(segments, 7, false)
 
         System.Console.WriteLine("Press key to exit")
         System.Console.ReadLine()
