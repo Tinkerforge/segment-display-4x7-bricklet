@@ -1,3 +1,4 @@
+Imports System
 Imports Tinkerforge
 
 Module ExampleSimple
@@ -20,8 +21,8 @@ Module ExampleSimple
         Dim segments() As Byte = {DIGITS(4), DIGITS(2), DIGITS(2), DIGITS(3)}
         sd.SetSegments(segments, 7, false)
 
-        System.Console.WriteLine("Press key to exit")
-        System.Console.ReadLine()
+        Console.WriteLine("Press key to exit")
+        Console.ReadLine()
         ipcon.Disconnect()
     End Sub
 End Module

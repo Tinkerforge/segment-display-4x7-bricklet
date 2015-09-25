@@ -23,5 +23,5 @@ if __name__ == "__main__":
     segments = (DIGITS[4], DIGITS[2], DIGITS[2], DIGITS[3])
     sd.set_segments(segments, 7, False)
 
-    raw_input('Press key to exit\n') # Use input() in Python 3
+    raw_input("Press key to exit\n") # Use input() in Python 3
     ipcon.disconnect()

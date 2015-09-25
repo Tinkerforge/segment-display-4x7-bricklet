@@ -1,3 +1,4 @@
+using System;
 using Tinkerforge;
 
 class Example
@@ -13,7 +14,8 @@ class Example
 	static void Main()
 	{
 		IPConnection ipcon = new IPConnection(); // Create IP connection
-		BrickletSegmentDisplay4x7 sd = new BrickletSegmentDisplay4x7(UID, ipcon); // Create device object
+		BrickletSegmentDisplay4x7 sd =
+		  new BrickletSegmentDisplay4x7(UID, ipcon); // Create device object
 
 		ipcon.Connect(HOST, PORT); // Connect to brickd
 		// Don't use device before ipcon is connected
@@ -22,8 +24,8 @@ class Example
 		byte[] segments = {DIGITS[4], DIGITS[2], DIGITS[2], DIGITS[3]};
 		sd.SetSegments(segments, 7, false);
 
-		System.Console.WriteLine("Press enter to exit");
-		System.Console.ReadLine();
+		Console.WriteLine("Press enter to exit");
+		Console.ReadLine();
 		ipcon.Disconnect();
 	}
 }

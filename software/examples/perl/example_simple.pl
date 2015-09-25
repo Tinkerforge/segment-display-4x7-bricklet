@@ -28,6 +28,6 @@ push(@segments, $digits[3]);
 
 $sd->set_segments(\@segments, 7, 0);
 
-print "Press any key to exit...\n";
+print "Press key to exit\n";
 <STDIN>;
 $ipcon->disconnect();
