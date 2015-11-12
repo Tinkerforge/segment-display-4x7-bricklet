@@ -13,7 +13,7 @@ function matlab_example_simple()
               hex2dec('71')]; % 0~9,A,b,C,d,E,F
 
     ipcon = IPConnection(); % Create IP connection
-    sd = BrickletSegmentDisplay4x7(UID, ipcon); % Create device object
+    sd = handle(BrickletSegmentDisplay4x7(UID, ipcon), 'CallbackProperties'); % Create device object
 
     ipcon.connect(HOST, PORT); % Connect to brickd
     % Don't use device before ipcon is connected
