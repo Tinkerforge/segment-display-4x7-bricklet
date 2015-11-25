@@ -1,10 +1,10 @@
-2.0.0:
+2013-11-20: 2.0.0 (3c8f2a9)
 - Initial version
 
-2.0.1:
+2014-03-27: 2.0.1 (6be1369)
 - Add bit banged I2C clear bus in constructor
 
-2.0.2:
+2015-04-14: 2.0.2 (06c81f6)
 - Show initial counter value
 - Don't strip final zero if counter value is zero
 - Turn all segments off on startup
