@@ -34,6 +34,7 @@ int main(void) {
 
 	printf("Press key to exit\n");
 	getchar();
+	segment_display_4x7_destroy(&sd);
 	ipcon_destroy(&ipcon); // Calls ipcon_disconnect internally
 	return 0;
 }
