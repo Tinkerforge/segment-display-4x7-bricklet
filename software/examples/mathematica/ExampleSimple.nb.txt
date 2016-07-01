@@ -3,7 +3,7 @@ LoadNETAssembly["Tinkerforge",NotebookDirectory[]<>"../../.."]
 
 host="localhost"
 port=4223
-uid="XYZ"(*Change to your UID*)
+uid="XYZ"(*Change XYZ to the UID of your Segment Display 4x7 Bricklet*)
 
 (* 0~9,A,b,C,d,E,F *)
 digits={63,6,91,79,102,109,125,7,127,111,119,124,57,94,121,113}

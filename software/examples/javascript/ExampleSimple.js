@@ -2,7 +2,7 @@ var Tinkerforge = require('tinkerforge');
 
 var HOST = 'localhost';
 var PORT = 4223;
-var UID = 'XYZ'; // Change to your UID
+var UID = 'XYZ'; // Change XYZ to the UID of your Segment Display 4x7 Bricklet
 var DIGITS = [0x3f,0x06,0x5b,0x4f,
               0x66,0x6d,0x7d,0x07,
               0x7f,0x6f,0x77,0x7c,

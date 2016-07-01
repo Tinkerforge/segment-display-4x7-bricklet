@@ -5,7 +5,7 @@ class Example
 {
 	private static string HOST = "localhost";
 	private static int PORT = 4223;
-	private static string UID = "XYZ"; // Change to your UID
+	private static string UID = "XYZ"; // Change XYZ to the UID of your Segment Display 4x7 Bricklet
 	private static byte[] DIGITS = {0x3f,0x06,0x5b,0x4f,
 	                                0x66,0x6d,0x7d,0x07,
 	                                0x7f,0x6f,0x77,0x7c,

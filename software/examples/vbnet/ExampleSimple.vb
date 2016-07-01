@@ -4,7 +4,7 @@ Imports Tinkerforge
 Module ExampleSimple
     Const HOST As String = "localhost"
     Const PORT As Integer = 4223
-    Const UID As String = "XYZ" ' Change to your UID
+    Const UID As String = "XYZ" ' Change XYZ to the UID of your Segment Display 4x7 Bricklet
     Dim DIGITS() As Byte = {&H3f,&H06,&H5b,&H4f, _
                             &H66,&H6d,&H7d,&H07, _
                             &H7f,&H6f,&H77,&H7c, _

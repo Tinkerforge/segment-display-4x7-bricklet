@@ -5,7 +5,7 @@ use Tinkerforge::BrickletSegmentDisplay4x7;
 
 use constant HOST => 'localhost';
 use constant PORT => 4223;
-use constant UID => 'XYZ'; # Change to your UID
+use constant UID => 'XYZ'; # Change XYZ to the UID of your Segment Display 4x7 Bricklet
 
 my @digits = (0x3f,0x06,0x5b,0x4f,
               0x66,0x6d,0x7d,0x07,

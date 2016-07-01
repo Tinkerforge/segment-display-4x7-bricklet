@@ -18,7 +18,7 @@ type
 const
   HOST = 'localhost';
   PORT = 4223;
-  UID = 'XYZ'; { Change to your UID }
+  UID = 'XYZ'; { Change XYZ to the UID of your Segment Display 4x7 Bricklet }
   DIGITS : array[0..15] of byte = ($3f,$06,$5b,$4f,
                                    $66,$6d,$7d,$07,
                                    $7f,$6f,$77,$7c,
