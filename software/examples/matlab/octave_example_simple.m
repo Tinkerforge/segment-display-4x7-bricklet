@@ -11,8 +11,8 @@ function octave_example_simple()
               hex2dec("39") hex2dec("5e") hex2dec("79") ...
               hex2dec("71")]; % 0~9,A,b,C,d,E,F
 
-    ipcon = java_new("com.tinkerforge.IPConnection"); % Create IP connection
-    sd = java_new("com.tinkerforge.BrickletSegmentDisplay4x7", UID, ipcon); % Create device object
+    ipcon = javaObject("com.tinkerforge.IPConnection"); % Create IP connection
+    sd = javaObject("com.tinkerforge.BrickletSegmentDisplay4x7", UID, ipcon); % Create device object
 
     ipcon.connect(HOST, PORT); % Connect to brickd
     % Don't use device before ipcon is connected
