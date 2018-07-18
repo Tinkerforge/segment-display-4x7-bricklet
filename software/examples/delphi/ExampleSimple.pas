@@ -19,16 +19,16 @@ const
   HOST = 'localhost';
   PORT = 4223;
   UID = 'XYZ'; { Change XYZ to the UID of your Segment Display 4x7 Bricklet }
-  DIGITS : array[0..15] of byte = ($3f,$06,$5b,$4f,
-                                   $66,$6d,$7d,$07,
-                                   $7f,$6f,$77,$7c,
-                                   $39,$5e,$79,$71);
+  DIGITS : array [0..15] of byte = ($3f,$06,$5b,$4f,
+                                    $66,$6d,$7d,$07,
+                                    $7f,$6f,$77,$7c,
+                                    $39,$5e,$79,$71);
 
 var
   e: TExample;
 
 procedure TExample.Execute;
-var segments: array[0..3] of byte;
+var segments: array [0..3] of byte;
 begin
   { Create IP connection }
   ipcon := TIPConnection.Create;
