@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/Tinkerforge/go-api-bindings/ipconnection"
-    "github.com/Tinkerforge/go-api-bindings/segment_display_4x7_bricklet"
+	"github.com/Tinkerforge/go-api-bindings/segment_display_4x7_bricklet"
 )
 
 const ADDR string = "localhost:4223"
@@ -13,11 +13,11 @@ var DIGITS = [16]uint8{0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6
 
 func main() {
 	ipcon := ipconnection.New()
-    defer ipcon.Close()
+	defer ipcon.Close()
 	sd, _ := segment_display_4x7_bricklet.New(UID, &ipcon) // Create device object.
 
 	ipcon.Connect(ADDR) // Connect to brickd.
-    defer ipcon.Disconnect()
+	defer ipcon.Disconnect()
 	// Don't use device before ipcon is connected.
 
 	segments := [4]uint8{DIGITS[4], DIGITS[2], DIGITS[2], DIGITS[3]}
@@ -25,6 +25,4 @@ func main() {
 
 	fmt.Print("Press enter to exit.")
 	fmt.Scanln()
-
-	ipcon.Disconnect()
 }
