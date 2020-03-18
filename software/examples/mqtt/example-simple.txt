@@ -1,7 +1,7 @@
 # Change XYZ to the UID of your Segment Display 4x7 Bricklet
 
 setup:
-    # 102 = 0x66 = the segments to show a 4
-    # 91  = 0x5b = the segments to show a 2
-    # 79  = 0x4f = the segments to show a 3
+	# 102 = 0x66 = the segments to show a 4
+	# 91  = 0x5b = the segments to show a 2
+	# 79  = 0x4f = the segments to show a 3
 	publish {"segments": [102, 91, 91, 79], "brightness": 7, "colon": false} to tinkerforge/request/segment_display_4x7_bricklet/XYZ/set_segments # Will display 4223
