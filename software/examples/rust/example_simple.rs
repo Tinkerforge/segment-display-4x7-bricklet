@@ -4,7 +4,12 @@ use tinkerforge::{ip_connection::IpConnection, segment_display_4x7_bricklet::*};
 
 const HOST: &str = "localhost";
 const PORT: u16 = 4223;
+<<<<<<< Updated upstream
 const UID: &str = "XYZ"; // Change XYZ to the UID of your Segment Display 4x7 Bricklet.
+=======
+const UID: &str = "XYZ"; // Change XYZ to the UID of your Segment Display 4x7 Bricklet
+
+>>>>>>> Stashed changes
 const DIGITS: [u8; 16] = [0x3f, 0x06, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x07, 0x7f, 0x6f, 0x77, 0x7c, 0x39, 0x5e, 0x79, 0x71]; // 0~9,A,b,C,d,E,F
 
 fn main() -> Result<(), Box<dyn Error>> {
